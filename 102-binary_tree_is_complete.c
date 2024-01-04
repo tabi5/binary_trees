@@ -148,7 +148,7 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	unsigned char flag = 0;
 
 	if (tree == NULL)
-		return 0;
+		return (0);
 
 	queue_head = queue_tail = create_node((binary_tree_t *)tree);
 	if (queue_head == NULL)
@@ -161,7 +161,7 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 			if (flag == 1)
 			{
 				free_queue(queue_head);
-				return 0;
+				return (0);
 			}
 			push(queue_head->node->left, queue_head, &queue_tail);
 		}
@@ -173,7 +173,7 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 			if (flag == 1)
 			{
 				free_queue(queue_head);
-				return 0;
+				return (0);
 			}
 			push(queue_head->node->right, queue_head, &queue_tail);
 		}
@@ -183,5 +183,5 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 		pop(&queue_head);
 	}
 
-	return 1;
+	return (1);
 }
