@@ -36,7 +36,7 @@ int is_bst_helper(const binary_tree_t *tree, int lo, int hi)
 				is_bst_helper(tree->right, tree->n + 1, hi);
 	}
 
-	return isBST;
+	return (isBST);
 }
 
 /**
@@ -67,6 +67,6 @@ int binary_tree_is_bst(const binary_tree_t *tree)
 	if (tree != NULL)
 		isBST = is_bst_helper(tree, INT_MIN, INT_MAX);
 
-	return isBST;
+	return (isBST);
 }
 
