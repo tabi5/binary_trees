@@ -26,41 +26,40 @@
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *tree, *newNode, *nodeToFlip;
-	int treeSize, leafNodes, subtractor, bitValue, treeLevel, tempValue;
-	int newVar = 2;
-	int varone = 1;
+	heap_t *tree, *new, *parent, *flip;
+	int size, leaves, sub, bit, level, tmp;
 
 	if (!root)
 		return (NULL);
 	if (!(*root))
 		return (*root = binary_tree_node(NULL, value));
 	tree = *root;
-	treeSize = binary_tree_size(tree);
-	leafNodes = treeSize;
-	for (treeLevel = 0, subtractor = varone; leafNodes >= subtractor;
-			subtractor *= newVar, treeLevel++)
-		leafNodes -= subtractor;
+	size = binary_tree_size(tree);
+	leaves = size;
+	for (level = 0, sub = 1; leaves >= sub; sub *= 2, level++)
+		leaves -= sub;
 
-	for (bitValue = varone << (treeLevel - varone);
-			bitValue != varone; bitValue >>= varone)
-		tree = leafNodes & bitValue ? tree->right : tree->left;
-	newNode = binary_tree_node(tree, value);
-	leafNodes & varone ? (tree->right = newNode) : (tree->left = newNode);
-
-	nodeToFlip = newNode;
-	for (; nodeToFlip->parent && (nodeToFlip->n > nodeToFlip->parent->n);
-			nodeToFlip = nodeToFlip->parent)
+	parent = NULL;
+	while (tree != NULL)
 	{
-		tempValue = nodeToFlip->n;
-		nodeToFlip->n = nodeToFlip->parent->n;
-		nodeToFlip->parent->n = tempValue;
-		newNode = newNode->parent;
+		parent = tree;
+		for (bit = 1 << (level - 1); bit != 1; bit >>= 1)
+			tree = leaves & bit ? tree->right : tree->left;
 	}
 
+	new = binary_tree_node(parent, value);
+	leaves & 1 ? (parent->right = new) : (parent->left = new);
 
+	flip = new;
+	while (flip->parent && (flip->n > flip->parent->n))
+	{
+		tmp = flip->n;
+		flip->n = flip->parent->n;
+		flip->parent->n = tmp;
+		new = new->parent;
+	}
 
-	return (newNode);
+	return (new);
 }
 
 /**
@@ -82,17 +81,11 @@ heap_t *heap_insert(heap_t **root, int value)
  */
 size_t binary_tree_size(const binary_tree_t *tree)
 {
-	size_t leftTreeSize, rightTreeSize, totalTreeSize, varone = 1;
-
 	if (!tree)
 		return (0);
 
-	leftTreeSize = binary_tree_size(tree->left);
-	rightTreeSize = binary_tree_size(tree->right);
-	totalTreeSize = leftTreeSize + rightTreeSize + varone;
+	size_t left_tree_size = binary_tree_size(tree->left);
+	size_t right_tree_size = binary_tree_size(tree->right);
 
-	return (totalTreeSize);
+	return (left_tree_size + right_tree_size + 1);
 }
-
-
-
